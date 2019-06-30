@@ -57,6 +57,10 @@ sgx_enclave_id_t e2_enclave_id = 0;
 #define ENCLAVE1_PATH "libenclave1.so"
 #define ENCLAVE2_PATH "libenclave2.so"
 
+void ocall_print(const char* str) {
+    printf("%s\n", str);
+}
+
 void waitForKeyPress()
 {
     char ch;

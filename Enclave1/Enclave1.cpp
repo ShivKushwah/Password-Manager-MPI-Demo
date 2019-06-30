@@ -163,7 +163,12 @@ uint32_t test_message_exchange(sgx_enclave_id_t src_enclave_id,
     secret_data = 0x12345678; //Secret Data here is shown only for purpose of demonstration.
 
     //Marshals the secret data into a buffer
-    ke_status = marshal_message_exchange_request(target_fn_id, msg_type, secret_data, &marshalled_inp_buff, &marshalled_inp_buff_len);
+    // ke_status = marshal_message_exchange_request(target_fn_id, msg_type, secret_data, &marshalled_inp_buff, &marshalled_inp_buff_len);
+    // if(ke_status != SUCCESS)
+    // {
+    //     return ke_status;
+    // }
+    ke_status = marshal_message_exchange_request2(target_fn_id, msg_type, 'q', &marshalled_inp_buff, &marshalled_inp_buff_len);
     if(ke_status != SUCCESS)
     {
         return ke_status;
@@ -179,6 +184,16 @@ uint32_t test_message_exchange(sgx_enclave_id_t src_enclave_id,
         SAFE_FREE(marshalled_inp_buff);
         return INVALID_SESSION;
     }
+
+    // char* temp_in_buf = malloc(20);
+    // temp_in_buf[0] = 'b';
+    // temp_in_buf[1] = 'r';
+    // temp_in_buf[2] = 'e';
+    // temp_in_buf[3] = '\0';
+
+
+
+
 
     //Core Reference Code function
     ke_status = send_request_receive_response(src_enclave_id, dest_enclave_id, dest_session_info, marshalled_inp_buff,

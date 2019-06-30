@@ -289,6 +289,7 @@ extern "C" uint32_t message_exchange_response_generator(char* decrypted_data,
 {
     ms_in_msg_exchange_t *ms;
     uint32_t inp_secret_data;
+    char inp_really_secret_data;
     uint32_t out_secret_data;
     if(!decrypted_data || !resp_length)
     {
@@ -296,8 +297,12 @@ extern "C" uint32_t message_exchange_response_generator(char* decrypted_data,
     }
     ms = (ms_in_msg_exchange_t *)decrypted_data;
 
-    if(umarshal_message_exchange_request(&inp_secret_data,ms) != SUCCESS)
+    // if(umarshal_message_exchange_request(&inp_secret_data,ms) != SUCCESS)
+    //     return ATTESTATION_ERROR;
+    if(umarshal_message_exchange_request2(&inp_really_secret_data,ms) != SUCCESS)
         return ATTESTATION_ERROR;
+    //ocall_print("BREH");
+    //ocall_print(&inp_really_secret_data);
 
     out_secret_data = get_message_exchange_response(inp_secret_data);
 
