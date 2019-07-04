@@ -206,6 +206,22 @@ uint32_t marshal_message_exchange_request3(uint32_t target_fn_id, uint32_t msg_t
     return SUCCESS;
 }
 
+uint32_t umarshal_message_exchange_request3(char* inp_secret_data, ms_in_msg_exchange_t* ms)
+{
+    char* buff;
+    size_t len;
+    if(!inp_secret_data || !ms)
+        return INVALID_PARAMETER_ERROR;    
+    buff = ms->inparam_buff;
+    len = ms->inparam_buff_len;
+    // if(len != strlen(char))
+    //     return ATTESTATION_ERROR;
+
+    memcpy(inp_secret_data, buff, len);
+
+    return SUCCESS;
+}
+
 uint32_t umarshal_message_exchange_request(uint32_t* inp_secret_data, ms_in_msg_exchange_t* ms)
 {
     char* buff;

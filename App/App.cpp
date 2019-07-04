@@ -116,6 +116,10 @@ int _tmain(int argc, _TCHAR* argv[])
     
     do
     {
+        printf("\n");
+        printf("\n");
+
+        printf("ENCLAVE1 Sending Ping---------\n");
         //Test Create session between Enclave1(Source) and Enclave2(Destination)
         status = Enclave1_test_create_session(e1_enclave_id, &ret_status, e1_enclave_id, e2_enclave_id);
         if (status!=SGX_SUCCESS)
@@ -174,6 +178,8 @@ int _tmain(int argc, _TCHAR* argv[])
                 break;
             }
         }
+
+        
     
 
         //Test Closing Session between Enclave1(Source) and Enclave2(Destination)
@@ -192,6 +198,69 @@ int _tmain(int argc, _TCHAR* argv[])
             else
             {
                 printf("\n\nClose session failure between Source (E1) and Destination (E2): Error code is %x", ret_status);
+                break;
+            }
+        }
+        printf("\n");
+        printf("\n");
+        printf("ENCLAVE2 Sending Pong---------\n");
+        //Test Create session between Enclave2(Source) and Enclave1(Destination)
+        status = Enclave2_test_create_session(e2_enclave_id, &ret_status, e2_enclave_id, e1_enclave_id);
+        if (status!=SGX_SUCCESS)
+        {
+            printf("Enclave2_test_create_session Ecall failed: Error code is %x", status);
+            break;
+        }
+        else
+        {
+            if(ret_status==0)
+            {
+                printf("\n\nSecure Channel Establishment between Source (E2) and Destination (E1) Enclaves successful !!!");
+            }
+            else
+            {
+                printf("\nSession establishment and key exchange failure between Source (E2) and Destination (E1): Error code is %x", ret_status);
+                break;
+            }
+        }
+
+
+
+        status = Enclave2_test_message_exchange(e2_enclave_id, &ret_status, e2_enclave_id, e1_enclave_id);
+        if (status!=SGX_SUCCESS)
+        {
+            printf("Enclave2_test_message_exchange Ecall failed: Error code is %x", status);
+            break;
+        }
+        else
+        {
+            if(ret_status==0)
+            {
+                printf("\n\nMessage Exchange between Source (E2) and Destination (E1) Enclaves successful !!!");
+            }
+            else
+            {
+                printf("\n\nMessage Exchange failure between Source (E2) and Destination (E1): Error code is %x", ret_status);
+                break;
+            }
+        }
+
+        //Test Closing Session between Enclave1(Source) and Enclave2(Destination)
+        status = Enclave2_test_close_session(e2_enclave_id, &ret_status, e2_enclave_id, e1_enclave_id);
+        if (status!=SGX_SUCCESS)
+        {
+            printf("Enclave2_test_close_session Ecall failed: Error code is %x", status);
+            break;
+        }
+        else
+        {
+            if(ret_status==0)
+            {
+                printf("\n\nClose Session between Source (E2) and Destination (E1) Enclaves successful !!!");
+            }
+            else
+            {
+                printf("\n\nClose session failure between Source (E2) and Destination (E1): Error code is %x", ret_status);
                 break;
             }
         }

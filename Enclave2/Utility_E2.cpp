@@ -135,6 +135,27 @@ uint32_t marshal_retval_and_output_parameters_e2_foo1(char** resp_buffer, size_t
     return SUCCESS;
 }
 
+uint32_t marshal_message_exchange_request3(uint32_t target_fn_id, uint32_t msg_type, char* secret_data, char** marshalled_buff, size_t* marshalled_buff_len)
+{
+    ms_in_msg_exchange_t *ms;
+    size_t secret_data_len, ms_len;
+    if(!marshalled_buff_len)
+        return INVALID_PARAMETER_ERROR;
+    secret_data_len = sizeof(secret_data);
+    ms_len = sizeof(ms_in_msg_exchange_t) + secret_data_len;
+    ms = (ms_in_msg_exchange_t *)malloc(ms_len);
+    if(!ms)
+        return MALLOC_ERROR;
+
+    ms->msg_type = msg_type;
+    ms->target_fn_id = target_fn_id;
+    ms->inparam_buff_len = (uint32_t)secret_data_len;
+    memcpy(&ms->inparam_buff, secret_data, secret_data_len);
+    *marshalled_buff = (char*)ms;
+    *marshalled_buff_len = ms_len;
+    return SUCCESS;
+}
+
 uint32_t marshal_message_exchange_request(uint32_t target_fn_id, uint32_t msg_type, uint32_t secret_data, char** marshalled_buff, size_t* marshalled_buff_len)
 {
     ms_in_msg_exchange_t *ms;

@@ -162,7 +162,13 @@ uint32_t test_message_exchange(sgx_enclave_id_t src_enclave_id,
     secret_data = 0x12345678; //Secret Data here is shown only for purpose of demonstration.
 
     //Marshals the secret data into a buffer
-    ke_status = marshal_message_exchange_request(target_fn_id, msg_type, secret_data, &marshalled_inp_buff, &marshalled_inp_buff_len);
+    // ke_status = marshal_message_exchange_request(target_fn_id, msg_type, secret_data, &marshalled_inp_buff, &marshalled_inp_buff_len);
+    // if(ke_status != SUCCESS)
+    // {
+    //     return ke_status;
+    // }
+    char str[] = "pong";
+    ke_status = marshal_message_exchange_request3(target_fn_id, msg_type, str, &marshalled_inp_buff, &marshalled_inp_buff_len);
     if(ke_status != SUCCESS)
     {
         return ke_status;
@@ -183,7 +189,7 @@ uint32_t test_message_exchange(sgx_enclave_id_t src_enclave_id,
     ke_status = send_request_receive_response(src_enclave_id, dest_enclave_id, dest_session_info, marshalled_inp_buff,
                                                 marshalled_inp_buff_len, max_out_buff_size, &out_buff, &out_buff_len);
     if(ke_status != SUCCESS)
-    {
+    {    
         SAFE_FREE(marshalled_inp_buff);
         SAFE_FREE(out_buff);
         return ke_status;
@@ -197,10 +203,10 @@ uint32_t test_message_exchange(sgx_enclave_id_t src_enclave_id,
         SAFE_FREE(out_buff);
         return ke_status;
     }
-
     SAFE_FREE(marshalled_inp_buff);
     SAFE_FREE(out_buff);
     SAFE_FREE(secret_response);
+
     return SUCCESS;
 }
 
