@@ -168,11 +168,25 @@ uint32_t test_message_exchange(sgx_enclave_id_t src_enclave_id,
     // {
     //     return ke_status;
     // }
-    ke_status = marshal_message_exchange_request2(target_fn_id, msg_type, 'q', &marshalled_inp_buff, &marshalled_inp_buff_len);
+    ms_in_msg_exchange_t* ms;
+    char str[] = "ping";
+    ke_status = marshal_message_exchange_request3(target_fn_id, msg_type, str, &marshalled_inp_buff, &marshalled_inp_buff_len, ms);
     if(ke_status != SUCCESS)
     {
         return ke_status;
     }
+    // ms_in_msg_exchange_t* ms = (ms_in_msg_exchange_t*) *marshalled_inp_buff;
+    // if (ms->msg_type == MESSAGE_EXCHANGE) {
+    //         ocall_print("ms->msg_type");
+    //         ocall_print(ms->inparam_buff);
+
+    // } else {
+    //                 ocall_print("dddems->msg_type");
+    //                             ocall_print(ms->inparam_buff);
+
+
+    // }
+    // ocall_print(((ms_in_msg_exchange_t)marshalled_inp_buff)->inparam_buff);
     //Search the map for the session information associated with the destination enclave id passed in
     std::map<sgx_enclave_id_t, dh_session_t>::iterator it = g_src_session_info_map.find(dest_enclave_id);
     if(it != g_src_session_info_map.end())
