@@ -301,14 +301,8 @@ extern "C" uint32_t message_exchange_response_generator(char* decrypted_data,
     //     return ATTESTATION_ERROR;
     if(umarshal_message_exchange_request3(inp_really_secret_data,ms) != SUCCESS)
         return ATTESTATION_ERROR;
-    ocall_print("BREH");
+    ocall_print("\nENCLAVE2 RECEIVED MESSAGE: ");
     ocall_print(inp_really_secret_data);
-
-    if (ms->msg_type == 0) {
-        ocall_print("YEET");
-        ocall_print(ms->inparam_buff);
-    }
-
 
     out_secret_data = get_message_exchange_response(inp_secret_data);
 

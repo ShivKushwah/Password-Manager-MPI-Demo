@@ -185,7 +185,7 @@ uint32_t marshal_message_exchange_request2(uint32_t target_fn_id, uint32_t msg_t
      return SUCCESS;
 }
 
-uint32_t marshal_message_exchange_request3(uint32_t target_fn_id, uint32_t msg_type, char* secret_data, char** marshalled_buff, size_t* marshalled_buff_len, ms_in_msg_exchange_t* ms_return)
+uint32_t marshal_message_exchange_request3(uint32_t target_fn_id, uint32_t msg_type, char* secret_data, char** marshalled_buff, size_t* marshalled_buff_len)
 {
     ms_in_msg_exchange_t *ms;
     size_t secret_data_len, ms_len;
@@ -203,8 +203,7 @@ uint32_t marshal_message_exchange_request3(uint32_t target_fn_id, uint32_t msg_t
     memcpy(&ms->inparam_buff, secret_data, secret_data_len);
     *marshalled_buff = (char*)ms;
     *marshalled_buff_len = ms_len;
-    ms_return = ms;
-     return SUCCESS;
+    return SUCCESS;
 }
 
 uint32_t umarshal_message_exchange_request(uint32_t* inp_secret_data, ms_in_msg_exchange_t* ms)
