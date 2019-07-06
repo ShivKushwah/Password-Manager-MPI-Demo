@@ -266,6 +266,14 @@ int _tmain(int argc, _TCHAR* argv[])
         }
 
 
+        printf("Welcome to the Intel-SGX Password Manager\n");
+    printf("Type \"help\"\n");
+
+    //TODO: passwords of length 1 don't work (maybe strncpy is deprecated)
+    //TODO: multiple passwords dont work
+
+    while (true)
+    {
 
         // std::string command;
         char strCommand[100];
@@ -292,7 +300,12 @@ int _tmain(int argc, _TCHAR* argv[])
             printf("get Website MasterPassword\n");
             printf("quit\n");
 
-        } else if (strcmp(str1, "create") == 0)
+        } 
+        else if (strcmp(str1, "quit") == 0) 
+        {
+            break;
+        } 
+        else if (strcmp(str1, "create") == 0)
         {
 
             printf("Creating Password Manager\n");
@@ -303,23 +316,79 @@ int _tmain(int argc, _TCHAR* argv[])
             //str2 = main keystore password
             int create_keystore_return;
             sgx_status_t status = Enclave1_create_keystore(e1_enclave_id, &create_keystore_return, str2);
-            if (status!=SGX_SUCCESS)
+        }
+        else if (strcmp(str1, "add") == 0)
         {
-            printf("Error in creating keystore");
+            printf("Adding Password\n");
+
+            int add_password_return;
+            split = strtok(NULL, " ");
+            strcpy(str2, split);
+            split = strtok(NULL, " ");
+            strcpy(str3, split);
+
+
+            //str2 = website
+            //str3 = password
+            sgx_status_t status2 = Enclave1_add_password(e1_enclave_id, &add_password_return, str2, str3);
+            printf("add_password returned: %u\n", add_password_return);
         }
-        else
+        else if (strcmp(str1, "get") == 0)
         {
-            if(ret_status==0)
-            {
-                printf("\n\nCreating keystore successful !!!");
-            }
-            else
-            {
-                printf("\n\nCreating keystore failure");
-                
-            }
+            printf("Getting Password\n");
+
+            char get_password_return_str[16];
+            int get_password_return;
+            split = strtok(NULL, " ");
+            strcpy(str2, split);
+            split = strtok(NULL, " ");
+            strcpy(str3, split);
+
+
+            //str2 = website
+            //str3 = main keystore password
+            sgx_status_t status3 = Enclave1_get_password(e1_enclave_id, &get_password_return, str2, get_password_return_str, str3);
+            printf("get_password returned: %u\n", get_password_return);
+            printf("get_password buffer: %s\n", get_password_return_str);
         }
+        else if (strcmp(str1, "encrypt") == 0)
+        {
+            //Serializes keystone (all data along with masterpassword) and saves to file
+            printf("Serializing Keystore");
+
+            int encrypt_return;
+            FILE *fp = fopen("encrypt.txt", "w+");
+
+            //TODO: Look at git history for working encrypt example, does this version write to file correctly?
+
+            sgx_status_t status4 = Enclave1_encrypt_and_serialize_key_store(e1_enclave_id, &encrypt_return, encrypt);
+            fprintf(fp, "%s", encrypt);
+            fclose(fp);
+            printf("serialize_key_store returned: %u\n", encrypt_return);
+            printf("serialize_key_store string: %s\n", (char *)encrypt);
         }
+        else if (strcmp(str1, "decrypt") == 0)
+        {
+            printf("Decrypting and Setting Keystore");
+
+            //TODO: read from encrypt.txt to set the keystone to all of the old values
+
+            int encrypt_return;
+            // size_t nread;
+
+            // FILE *file = fopen("encrypt.txt", "r");
+            // if (file) {
+            //     while ((nread = fread(encrypt, 1, sizeof encrypt, file)) > 0)
+            //         fwrite(encrypt, 1, nread, stdout);
+            //     if (ferror(file)) {
+            //         /* deal with error */
+            //     }
+            //     fclose(file);
+            // }
+            printf("encrypted string %s", encrypt);
+            sgx_status_t status5 = Enclave1_decrypt_and_set_key_store(e1_enclave_id, &encrypt_return, encrypt);
+        }
+    }
 
 
        

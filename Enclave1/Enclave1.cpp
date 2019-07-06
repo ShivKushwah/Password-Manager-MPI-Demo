@@ -437,6 +437,7 @@ int create_keystore(char* main_password) {
 		abort();
 	}
 	strncpy(password, main_password, password_len);
+    password[password_len] = '\0';
 	firstKey->next=NULL;
 	return 0;
 
@@ -456,7 +457,7 @@ int add_password(char* website, char* password) {
     	abort(); //out of memory
     }
     strncpy(currentKey->password, password, password_len);
-    strncpy(currentKey->website, website, website_len);
+    strncpy(currentKey->website, website, website_len);    
 
     KeyStoreBank* newKey = (KeyStoreBank*) malloc(sizeof(struct KeyStoreBank));
     currentKey->next = newKey;
@@ -490,7 +491,7 @@ int get_password(char* website, char* returnstr, char* verification_password) {
     	return -1;
     }
     strncpy(returnstr, iterator->password, strlen(iterator->password));
-
+    returnstr[strlen(iterator->password)]= '\0';
     unsigned char var[3] = "hi";
     //TODO remove this readrand code
 
