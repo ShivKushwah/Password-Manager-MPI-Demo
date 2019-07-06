@@ -264,6 +264,37 @@ int _tmain(int argc, _TCHAR* argv[])
                 break;
             }
         }
+
+
+
+        // std::string command;
+        char strCommand[100];
+
+        char str1[100];
+        char str2[100];
+        char str3[100];
+        char str4[100];
+        int i;
+        void *encrypt = malloc(100);
+
+        printf("Enter a command: ");
+
+        // std::getline (std::cin, command);
+
+        scanf("%[^\n]%*c", strCommand);
+        char* split = strtok(strCommand, " ");
+        strcpy(str1, split);
+
+        if (strcmp(str1, "help") == 0) {
+            printf("Example Usage\n");
+            printf("create MasterPassword\n");
+            printf("add Website WebsitePassword\n");
+            printf("get Website MasterPassword\n");
+            printf("quit\n");
+
+        } 
+
+
        
 }while(0);
 

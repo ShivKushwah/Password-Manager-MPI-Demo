@@ -40,7 +40,12 @@ enclave {
             public uint32_t test_message_exchange(sgx_enclave_id_t src_enclave_id, sgx_enclave_id_t dest_enclave_id, [in, string] char* message, int messagelen);
             public uint32_t test_close_session(sgx_enclave_id_t src_enclave_id, sgx_enclave_id_t dest_enclave_id);
 
-
+            public int add_password([in, string] char* website, [in, string] char* password);
+            public int create_keystore([in, string] char* main_password);
+            public int get_password([in, string] char* website, [out, size=16] char* returnstr, [in, string] char* verification_password);
+            public int serialize_key_store([out, size=70] void* p_dst);
+            public int decrypt_and_set_key_store([in, size=70] void* key_store);
+            public int encrypt_and_serialize_key_store([out, size=70] void* p_dst);
             
     };
     untrusted {
