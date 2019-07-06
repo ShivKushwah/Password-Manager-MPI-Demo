@@ -292,7 +292,34 @@ int _tmain(int argc, _TCHAR* argv[])
             printf("get Website MasterPassword\n");
             printf("quit\n");
 
-        } 
+        } else if (strcmp(str1, "create") == 0)
+        {
+
+            printf("Creating Password Manager\n");
+            split = strtok(NULL, " ");
+            strcpy(str2, split);
+
+
+            //str2 = main keystore password
+            int create_keystore_return;
+            sgx_status_t status = Enclave1_create_keystore(e1_enclave_id, &create_keystore_return, str2);
+            if (status!=SGX_SUCCESS)
+        {
+            printf("Error in creating keystore");
+        }
+        else
+        {
+            if(ret_status==0)
+            {
+                printf("\n\nCreating keystore successful !!!");
+            }
+            else
+            {
+                printf("\n\nCreating keystore failure");
+                
+            }
+        }
+        }
 
 
        
