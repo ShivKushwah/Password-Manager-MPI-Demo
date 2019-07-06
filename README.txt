@@ -1,3 +1,11 @@
+SECURE MESSAGE SENDING in Intel SGX Enclaves
+
+Enclave 1 local attests Enclave 2 and then creates a diffie hellman session
+Sends “ping”
+Enclave 2 local attests Enclave 2 and then creates its own diffie hellman session
+Sends “pong”
+
+---Sample Code Description Below---
 ---------------------------
 Purpose of LocalAttestation
 ---------------------------
