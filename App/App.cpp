@@ -160,7 +160,7 @@ int _tmain(int argc, _TCHAR* argv[])
             }
         }
         //Test message exchange between Enclave1(Source) and Enclave2(Destination)
-        status = Enclave1_test_message_exchange(e1_enclave_id, &ret_status, e1_enclave_id, e2_enclave_id);
+        status = Enclave1_test_message_exchange(e1_enclave_id, &ret_status, e1_enclave_id, e2_enclave_id, "ping", 4);
         if (status!=SGX_SUCCESS)
         {
             printf("Enclave1_test_message_exchange Ecall failed: Error code is %x", status);
@@ -226,7 +226,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 
 
-        status = Enclave2_test_message_exchange(e2_enclave_id, &ret_status, e2_enclave_id, e1_enclave_id);
+        status = Enclave2_test_message_exchange(e2_enclave_id, &ret_status, e2_enclave_id, e1_enclave_id, "pong", 4);
         if (status!=SGX_SUCCESS)
         {
             printf("Enclave2_test_message_exchange Ecall failed: Error code is %x", status);

@@ -144,7 +144,8 @@ uint32_t test_enclave_to_enclave_call(sgx_enclave_id_t src_enclave_id,
 
 //Makes use of the sample code function to do a generic secret message exchange (Test Vector)
 uint32_t test_message_exchange(sgx_enclave_id_t src_enclave_id,
-                               sgx_enclave_id_t dest_enclave_id)
+                               sgx_enclave_id_t dest_enclave_id, 
+                               char* message, int messagelen)
 {
     ATTESTATION_STATUS ke_status = SUCCESS;
     uint32_t target_fn_id, msg_type;
@@ -168,7 +169,9 @@ uint32_t test_message_exchange(sgx_enclave_id_t src_enclave_id,
     // {
     //     return ke_status;
     // }
-    char str[] = "ping";
+    char str[messagelen + 1];
+    memcpy(str, message, messagelen);
+    str[messagelen] = '\0';
     ke_status = marshal_message_exchange_request3(target_fn_id, msg_type, str, &marshalled_inp_buff, &marshalled_inp_buff_len);
     if(ke_status != SUCCESS)
     {
