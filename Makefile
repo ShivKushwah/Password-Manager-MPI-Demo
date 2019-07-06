@@ -141,9 +141,12 @@ else
 endif
 Crypto_Library_Name := sgx_tcrypto
 
-Enclave_Cpp_Files_1 := $(wildcard Enclave1/*.cpp)
+Enclave_Cpp_Files_1 := $(wildcard Enclave1/*.cpp) 
+Enclave_CPP_Files_Pwmanager_Lib_1 := Enclave1/Sealing/Sealing.cpp Enclave1/binn/binn.cpp \
+	Enclave1/scrypt/crypto_scrypt.cpp Enclave1/scrypt/sha256.cpp \
+	Enclave1/scrypt/crypto_scrypt_smix.cpp Enclave1/scrypt/insecure_memzero.cpp
 Enclave_Cpp_Files_2 := $(wildcard Enclave2/*.cpp)
-Enclave_Include_Paths := -I$(SGX_SDK)/include -I$(SGX_SDK)/include/tlibc -I$(SGX_SDK)/include/libcxx -I./LocalAttestationCode -I./Include
+Enclave_Include_Paths := -I$(SGX_SDK)/include -I$(SGX_SDK)/include/tlibc -I$(SGX_SDK)/include/libcxx -I./LocalAttestationCode -I./Include -IEnclave1
 
 CC_BELOW_4_9 := $(shell expr "`$(CC) -dumpversion`" \< "4.9")
 ifeq ($(CC_BELOW_4_9), 1)
@@ -177,6 +180,8 @@ Enclave1_Link_Flags := $(Common_Enclave_Link_Flags) -Wl,--version-script=$(Encla
 Enclave2_Link_Flags := $(Common_Enclave_Link_Flags) -Wl,--version-script=$(Enclave2_Version_Script)
 
 Enclave_Cpp_Objects_1 := $(Enclave_Cpp_Files_1:.cpp=.o)
+Enclave_Cpp_Objects_Pwmanager_Lib_1 := $(Enclave_CPP_Files_Pwmanager_Lib_1:.cpp=.o)
+
 Enclave_Cpp_Objects_2 := $(Enclave_Cpp_Files_2:.cpp=.o)
 
 Enclave_Name_1 := libenclave1.so
@@ -309,12 +314,12 @@ Enclave1/Enclave1_t.o: Enclave1/Enclave1_t.c
 	@$(CC) $(Enclave_C_Flags) -c $< -o $@
 	@echo "CC   <=  $<"
 
-Enclave1/%.o: Enclave1/%.cpp Enclave1/Enclave1_t.h
+Enclave1/%.o: Enclave1/%.cpp Enclave1/Enclave1_t.h Enclave1/scrypt/*.h
 	@$(CXX) $(Enclave_Cxx_Flags) -c $< -o $@
 	@echo "CXX  <=  $<"
 
-Enclave1.so: Enclave1/Enclave1_t.o $(Enclave_Cpp_Objects_1) $(Trust_Lib_Name)
-	@$(CXX) Enclave1/Enclave1_t.o $(Enclave_Cpp_Objects_1) -o $@ $(Enclave1_Link_Flags)
+Enclave1.so: Enclave1/Enclave1_t.o $(Enclave_Cpp_Objects_1) $(Trust_Lib_Name) $(Enclave_Cpp_Objects_Pwmanager_Lib_1)
+	@$(CXX) Enclave1/Enclave1_t.o $(Enclave_Cpp_Objects_1) $(Enclave_Cpp_Objects_Pwmanager_Lib_1) -o $@ $(Enclave1_Link_Flags)
 	@echo "LINK =>  $@"
 
 $(Enclave_Name_1): Enclave1.so
