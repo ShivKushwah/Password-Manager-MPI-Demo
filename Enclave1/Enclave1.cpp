@@ -458,6 +458,8 @@ int add_password(char* website, char* password) {
     }
     strncpy(currentKey->password, password, password_len);
     strncpy(currentKey->website, website, website_len);    
+    currentKey->password[password_len] = '\0';
+    currentKey->website[website_len] = '\0';
 
     KeyStoreBank* newKey = (KeyStoreBank*) malloc(sizeof(struct KeyStoreBank));
     currentKey->next = newKey;
