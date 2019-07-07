@@ -104,6 +104,7 @@ int _tmain(int argc, _TCHAR* argv[])
     printf("\nAvailable Enclaves");
     printf("\nEnclave1 - EnclaveID %" PRIx64, e1_enclave_id);
     printf("\nEnclave2 - EnclaveID %" PRIx64, e2_enclave_id);
+    printf("\n");
 
 
     printf("Welcome to the Intel-SGX Password Manager\n");
