@@ -40,6 +40,8 @@ enclave {
             public uint32_t test_message_exchange(sgx_enclave_id_t src_enclave_id, sgx_enclave_id_t dest_enclave_id, [in, string] char* message, int messagelen);
             public uint32_t test_close_session(sgx_enclave_id_t src_enclave_id, sgx_enclave_id_t dest_enclave_id);
 
+            //Password Manager Code Below
+
             public int add_password([in, string] char* website, [in, string] char* password);
             public int create_keystore([in, string] char* main_password);
             public int get_password([in, string] char* website, [out, size=16] char* returnstr, [in, string] char* verification_password);

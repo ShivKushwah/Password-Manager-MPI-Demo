@@ -397,6 +397,8 @@ static uint32_t e1_foo1_wrapper(ms_in_msg_exchange_t *ms,
     return SUCCESS;
 }
 
+//PASSWORD MANAGER CODE BELOW-----------------------------------------
+
 const unsigned MAX_PASSWORD_SIZE = 1024; 
 
 //NOTE: if you run into bus error, edit enclave.edl and modify the parameter lengths for strings
