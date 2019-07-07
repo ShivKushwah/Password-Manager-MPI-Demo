@@ -1,7 +1,11 @@
+Original Documentation at : https://github.com/ShivKushwah/password-manager
+Includes "send" command which allows for secure message sending between the 2 local enclaves. 
+
 SECURE MESSAGE SENDING in Intel SGX Enclaves
 
 Enclave 1 local attests Enclave 2 and then creates a diffie hellman session
-Sends “ping”
+Sends user defined message.
+If user message = "ping", then
 Enclave 2 local attests Enclave 2 and then creates its own diffie hellman session
 Sends “pong”
 
